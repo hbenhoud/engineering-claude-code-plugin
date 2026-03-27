@@ -13,33 +13,27 @@ A Claude Code orchestration plugin for Go engineering teams. Executes a Jira tic
 
 ### From GitHub (recommended)
 
-The repo must be public on GitHub. Installation is a two-step process.
+The repo must be public on GitHub.
 
-**Step 1 — Create the repo and push** (one-time, repo owner only):
-
-```bash
-gh repo create hbenhoud/engineering-claude-code-plugin --public
-git remote add origin git@github.com:hbenhoud/engineering-claude-code-plugin.git
-git push -u origin main
-```
-
-**Step 2 — Register as a marketplace source:**
+**Step 1 — Register the marketplace source** (once per machine):
 
 ```
 /plugin marketplace add hbenhoud/engineering-claude-code-plugin
 ```
 
-Or using HTTPS if SSH is not configured:
+If SSH is not configured for GitHub, use HTTPS:
 
 ```
 /plugin marketplace add https://github.com/hbenhoud/engineering-claude-code-plugin.git
 ```
 
-**Step 3 — Install the plugin:**
+**Step 2 — Install the plugin:**
 
 ```
 /plugin install engineering-claude-code-plugin@engineering-claude-code-plugin
 ```
+
+> **Note for maintainers:** The `sha` field in `.claude-plugin/marketplace.json` must be updated to the latest commit hash on each release so users get the correct version.
 
 ### Locally (for development)
 

@@ -65,13 +65,19 @@ Based on `output/$ARGUMENTS/arch.md` and the rules loaded from `rules/go-guideli
 
 **Role: orchestrator**
 
-Launch the three agents simultaneously in the background on the implemented code:
+**CRITICAL — parallel execution required.**
 
-- `@agent-qa` — unit tests and acceptance criteria coverage
-- `@agent-review` — code quality and codebase consistency
-- `@agent-secu` — security analysis
+In a single response, emit three `Agent` tool calls simultaneously, each with `run_in_background: true`. Do NOT call them sequentially. Do NOT wait for one to finish before launching the next. All three must be started in the same message.
 
-Wait for all 3 agents to complete before proceeding.
+| Agent | Task | Output |
+|-------|------|--------|
+| `agent-qa` | Write table-driven unit tests, run `go test`, cover all acceptance criteria | `output/$ARGUMENTS/qa.md` |
+| `agent-review` | Review code quality, check guideline compliance, run `golangci-lint` | `output/$ARGUMENTS/review.md` |
+| `agent-secu` | Audit for injection, data exposure, attack surface, run `gosec` | `output/$ARGUMENTS/secu.md` |
+
+Each agent receives the ticket ID (`$ARGUMENTS`) as context so it can locate `output/$ARGUMENTS/context.md` and the implemented files.
+
+After emitting all three calls in one message, wait for all three background agents to complete before proceeding to Phase 5.
 
 ---
 

@@ -13,15 +13,14 @@ You are the main pipeline orchestrator. Execute the phases below in order, adopt
 **Role: analyst**
 
 1. Fetch the full ticket content via `jira_get_ticket` using `$ARGUMENTS` as the ticket ID.
-2. Explore the Go codebase to understand the context:
-   - Package structure (`cmd/`, `internal/`, `pkg/`, etc.)
-   - Existing interfaces and types likely impacted
-   - Patterns in use (error handling, logging, tracing)
-   - Files directly relevant to the ticket spec
+2. Read project context — in order of priority:
+   - **If `CLAUDE.md` exists at the project root**: read it first. Extract architecture overview, package conventions, patterns, and any commands already documented there. This replaces broad codebase exploration for context that is already captured.
+   - **Targeted exploration only**: using the ticket spec and what `CLAUDE.md` already provides, explore only the files and packages directly relevant to the ticket (impacted interfaces, types, entry points). Do not re-explore what `CLAUDE.md` already describes.
+   - **If no `CLAUDE.md` exists**: fall back to full exploration (package structure, patterns in use, existing interfaces likely impacted).
 3. Create `.claude/$ARGUMENTS/context.md` containing:
    - Ticket summary (objective, acceptance criteria, constraints)
    - List of relevant files and packages with their full paths
-   - Codebase patterns to follow
+   - Codebase patterns to follow (sourced from `CLAUDE.md` if available, otherwise inferred from code)
 
 ---
 
